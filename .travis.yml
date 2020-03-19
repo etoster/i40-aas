@@ -1,9 +1,9 @@
 dist: bionic
-language: generic
+language: minimal
 git:
   depth: 1
 
-if: (branch = canary-ci OR branch = master) AND (type = push OR type = pull_request)
+if: (branch = ci-rework OR branch = master) AND (type = push OR type = pull_request)
 
 stages:
   - test
@@ -12,7 +12,8 @@ stages:
 
 env:
   global:
-    - SVC_PREFIX="${AZURE_CONTAINER_REGISTRY}/i40-aas"
+    - SVC_PREFIX="${AZURE_CONTAINER_REGISTRY}/i40-aas-"
+    - BUILD_TAG=$(cat .git/refs/heads/${TRAVIS_BRANCH})
   matrix:
     - SERVICE=adapter-registry
     - SERVICE=data-manager
@@ -26,44 +27,48 @@ env:
     - SERVICE=initializer
     - SERVICE=endpoint-resolver
 
-#before_install:
-#  - tests here
-
 install:
   - make --version
   - docker --version
   - docker-compose --version
-
-before_script:
-#  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
   - if [ $TRAVIS_BRANCH = master ]; then
       SVC_PREFIX="sapi40/i40-aas-";
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
     else
       openssl aes-256-cbc -K $encrypted_260941c77da3_key -iv $encrypted_260941c77da3_iv -in azure-service-principal.txt.enc -out azure-service-principal.txt -d;
-      cat azure-service-principal.txt | docker login $AZURE_CONTAINER_REGISTRY --username $service_principal_id --password-stdin;
+      cat azure-service-principal.txt | docker login $AZURE_CONTAINER_REGISTRY -u $service_principal_id --password-stdin;
     fi
-
-script:
   - make build-single
-  - if [ $TRAVIS_EVENT_TYPE = push ]; then
-      make push-single;
-    fi
+
+deploy:
+  - provider: script
+    script: make push-single
+    on:
+      all_branches: true
+      condition: $TRAVIS_EVENT_TYPE = push
 
 jobs:
   include:
     - stage: deploy
-      before_deploy:
-	- curl -L https://aka.ms/InstallAzureCli | bash
-	- curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.10/bin/linux/amd64/kubectl
-	- chmod +x ./kubectl
-	- sudo mv ./kubectl /usr/local/bin/kubectl
-	- (AZ_PASS=$(cat azure-service-principal.txt) && az login --service-principal -u $service_principal_id -p $AZ_PASS --tenant $SAP_TENANT)
-	- az aks get-credentials -n i40aas -g i40-aas
-#        - kubectl get pods -n aas-${TRAVIS_BRANCH}
-	- kubectl config get-contexts
-	- curl -LO https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
-	- tar -zxvf helm-v3.1.2-linux-amd64.tar.gz
-	- sudo mv linux-amd64/helm /usr/local/bin/helm
-	- helm version
-#      deploy:
+      install:
+        - sudo apt-get update
+        - sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
+        - curl -sL https://packages.microsoft.com/keys/microsoft.asc |
+            gpg --dearmor |
+            sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+        - AZ_REPO=$(lsb_release -cs)
+        - echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" |
+            sudo tee /etc/apt/sources.list.d/azure-cli.list
+        - sudo apt-get update && sudo apt-get install azure-cli
+              - curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.10/bin/linux/amd64/kubectl
+              - chmod +x ./kubectl
+              - sudo mv ./kubectl /usr/local/bin/kubectl
+              - curl -LO https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
+              - tar -zxvf helm-v3.1.2-linux-amd64.tar.gz
+              - sudo mv linux-amd64/helm /usr/local/bin/helm
+        - openssl aes-256-cbc -K $encrypted_260941c77da3_key -iv $encrypted_260941c77da3_iv -in azure-service-principal.txt.enc -out azure-service-principal.txt -d
+        - (AZ_PASS=$(cat azure-service-principal.txt) && az login --service-principal -u $service_principal_id -p $AZ_PASS --tenant $SAP_TENANT)
+        - az aks get-credentials -n i40aas -g i40-aas
+        - kubectl config get-contexts
+        - helm version 
 #        - helm update NAME helm/i40-aas/ -f VALUES -n aas-${TRAVIS_BRANCH} && kubectl rollout restart -n aas-${TRAVIS_BRANCH}
