@@ -3,25 +3,41 @@ language: generic
 git:
   depth: 1
 
-if: branch = master #AND type = push
+if: (branch = canary-ci OR branch = master) AND (type = push OR type = pull_request)
 
 env:
-  - SERVICE=adapter-registry
-  - SERVICE=data-manager
-  - SERVICE=endpoint-registry
-  - SERVICE=https-endpoint-egress
-  - SERVICE=https-endpoint-ingress
-  - SERVICE=onboarding-skill
-  - SERVICE=storage-adapter-mongodb
-  - SERVICE=grpc-endpoint-ingress
-  - SERVICE=grpc-endpoint-egress
-  - SERVICE=initializer
-  - SERVICE=endpoint-resolver
+  global:
+    - SVC_PREFIX=$AZURE_SVC_PREFIX
+  matrix:
+    - SERVICE=adapter-registry
+    - SERVICE=data-manager
+    - SERVICE=endpoint-registry
+    - SERVICE=https-endpoint-egress
+    - SERVICE=https-endpoint-ingress
+    - SERVICE=onboarding-skill
+    - SERVICE=storage-adapter-mongodb
+    - SERVICE=grpc-endpoint-ingress
+    - SERVICE=grpc-endpoint-egress
+    - SERVICE=initializer
+    - SERVICE=endpoint-resolver
 
 install:
   - make --version
   - docker --version
   - docker-compose --version
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+#  - tests here
+
+before_script:
+  - if [ $TRAVIS_BRANCH = master ]; then
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
+      SVC_PREFIX="sapi40/i40-aas-";
+    else
+      openssl aes-256-cbc -K $encrypted_260941c77da3_key -iv $encrypted_260941c77da3_iv -in azure-service-principal.txt.enc -out azure-service-principal.txt -d;
+      cat azure-service-principal.txt | docker login i40aas.azurecr.io --username $service_principal_id --password-stdin;
+    fi
+
+script:
   - make build-single
-  - make push-single
+  - if [ $TRAVIS_EVENT_TYPE = push ]; then
+      make push-single;
+    fi
