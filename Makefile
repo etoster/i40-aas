@@ -1,5 +1,5 @@
-BUILD_TAG = $(shell cat .git/refs/heads/master)
-SVC_PREFIX = sapi40/i40-aas-
+BUILD_TAG ?= $(shell cat .git/refs/heads/master)
+SVC_PREFIX ?= sapi40/i40-aas-
 
 
 .DEFAULT_GOAL := build
