@@ -6,28 +6,18 @@ git:
 if: (branch = ci-rework OR branch = master) AND (type = push OR type = pull_request)
 
 stages:
-  - test
-  - name: deploy
+  - lib-test
+  - unit-test
+  - integration-test
+  - name: publish
     if: type = push
 
 env:
   global:
     - SVC_PREFIX="${AZURE_CONTAINER_REGISTRY}/i40-aas-"
     - BUILD_TAG=$(cat .git/refs/heads/${TRAVIS_BRANCH})
-  matrix:
-    - SERVICE=adapter-registry
-    - SERVICE=data-manager
-    - SERVICE=endpoint-registry
-    - SERVICE=https-endpoint-egress
-    - SERVICE=https-endpoint-ingress
-    - SERVICE=onboarding-skill
-    - SERVICE=storage-adapter-mongodb
-    - SERVICE=grpc-endpoint-ingress
-    - SERVICE=grpc-endpoint-egress
-    - SERVICE=initializer
-    - SERVICE=endpoint-resolver
 
-install:
+before_install:
   - make --version
   - docker --version
   - docker-compose --version
@@ -38,37 +28,24 @@ install:
       openssl aes-256-cbc -K $encrypted_260941c77da3_key -iv $encrypted_260941c77da3_iv -in azure-service-principal.txt.enc -out azure-service-principal.txt -d;
       cat azure-service-principal.txt | docker login $AZURE_CONTAINER_REGISTRY -u $service_principal_id --password-stdin;
     fi
-  - make build-single
 
-deploy:
-  - provider: script
-    script: make push-single
-    on:
-      all_branches: true
-      condition: $TRAVIS_EVENT_TYPE = push
 
 jobs:
   include:
-    - stage: deploy
+    - stage: lib-test
+      env:
       install:
-        - sudo apt-get update
-        - sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
-        - curl -sL https://packages.microsoft.com/keys/microsoft.asc |
-            gpg --dearmor |
-            sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
-        - AZ_REPO=$(lsb_release -cs)
-        - echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" |
-            sudo tee /etc/apt/sources.list.d/azure-cli.list
-        - sudo apt-get update && sudo apt-get install azure-cli
-              - curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.10/bin/linux/amd64/kubectl
-              - chmod +x ./kubectl
-              - sudo mv ./kubectl /usr/local/bin/kubectl
-              - curl -LO https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
-              - tar -zxvf helm-v3.1.2-linux-amd64.tar.gz
-              - sudo mv linux-amd64/helm /usr/local/bin/helm
-        - openssl aes-256-cbc -K $encrypted_260941c77da3_key -iv $encrypted_260941c77da3_iv -in azure-service-principal.txt.enc -out azure-service-principal.txt -d
-        - (AZ_PASS=$(cat azure-service-principal.txt) && az login --service-principal -u $service_principal_id -p $AZ_PASS --tenant $SAP_TENANT)
-        - az aks get-credentials -n i40aas -g i40-aas
-        - kubectl config get-contexts
-        - helm version 
-#        - helm update NAME helm/i40-aas/ -f VALUES -n aas-${TRAVIS_BRANCH} && kubectl rollout restart -n aas-${TRAVIS_BRANCH}
+	- ./src/scipts/lib-test.sh
+    - stage: unit-test
+      env:
+      install:
+	- make test-single
+    - stage: integration-test
+      env:
+      install:
+	- make build-single
+    - stage: publish
+      install:
+	- make push-single
+
+# an welcher Stage push single?
