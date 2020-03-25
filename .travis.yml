@@ -3,7 +3,7 @@ language: minimal
 git:
   depth: 1
 
-if: (branch = ci-rework OR branch = master) AND (type = push OR type = pull_request)
+if: (branch = ci-rewor OR branch = master) AND (type = push OR type = pull_request)
 
 stages:
   - lib-test
