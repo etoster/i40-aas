@@ -64,6 +64,7 @@ core:
       password: admin
 
   egress:
+    routingKey: egress.generic
     exchange: egress
     user: guest
     password: guest
