@@ -30,22 +30,23 @@ before_install:
     fi
 
 
-jobs:
+jobs: 
   include:
     - stage: lib-test
-      env:
-      install:
-	- ./src/scipts/lib-test.sh
+      env: 
+      install: 
+        - ./src/scipts/lib-test.sh
     - stage: unit-test
-      env:
-      install:
-	- make test-single
+      env: 
+      install: 
+        - make test-single
     - stage: integration-test
-      env:
-      install:
-	- make build-single
+      env: 
+      install: 
+        - make build-single
     - stage: publish
       install:
-	- make push-single
+        - make push-single
 
 # an welcher Stage push single?
+      
