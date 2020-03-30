@@ -23,7 +23,7 @@ jobs:
       language: node_js
       install: 
         - docker-compose up -d rabbitmq
-        - cd /src/ts/pkg/AMQP-Client
+        - cd src/ts/pkg/AMQP-Client
         - npm ci 
       script:
         - npm test 
@@ -33,7 +33,7 @@ jobs:
       language: go 
       install: 
         - docker-compose up -d rabbitmq
-        - cd /src/go/pkg/amqpclient
+        - cd src/go/pkg/amqpclient
       script:
         - go test 
         - docker-compose stop rabbitmq 
