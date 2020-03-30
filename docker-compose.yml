@@ -139,7 +139,7 @@ services:
       - CORE_REGISTRIES_ADAPTERS_USER=${CORE_REGISTRIES_ADAPTERS_USER}
       - CORE_REGISTRIES_ADAPTERS_PASSWORD=${CORE_REGISTRIES_ADAPTERS_PASSWORD}
   ##########################################
- i40-aas-initializer:
+  i40-aas-initializer:
     image: sapi40/i40-aas-initializer
     volumes:
       - ./src/compose/volumes/initializer/:/initializer
