@@ -53,16 +53,11 @@ jobs:
       install: 
         - npm install -g newman
 #        - make 
-#        - docker-compose -f docker-compose.yml up -d --force-recreate
+        - docker-compose -f docker-compose.yml up -d --force-recreate
 #        - docker-compose up -d rabbitmq
 #        - nc -z localhost 5672
 #        - echo $?
-#        - until nc -z localhost 5672; do
-#            sleep 1;
-#            echo "sleep";
-#          done
-        - nc -h
-        - echo $?
+        - until nc -z localhost 5672; do sleep 0.1; echo "wait for rabbitmq"; done
         - newman run docs/postman/AAS.postman_collection.json
 
 #    - stage: publish
