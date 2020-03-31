@@ -47,6 +47,7 @@ jobs:
 
     - stage: integration-test
       language: node_js
+      node_js: lts/*
       install: 
         - npm install -g newman
         - make 
