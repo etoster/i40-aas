@@ -18,19 +18,20 @@ stages:
 
 jobs: 
   include:
-    - stage: lib-test
-      language: node_js
-      node_js: lts/*
-      install: 
-        - docker-compose up -d rabbitmq
-        - cd src/ts/pkg/AMQP-Client
-        - npm i 
-      script:
-        - npm test 
- #       - docker-compose stop rabbitmq
+#    - stage: lib-test
+#      language: node_js
+#      node_js: lts/*
+#      install: 
+#        - docker-compose up -d rabbitmq
+#        - cd src/ts/pkg/AMQP-Client
+#        - npm i 
+#      script:
+#        - npm test 
+#       - docker-compose stop rabbitmq
 
     - stage: lib-test
       language: go 
+      env: GO111MODULE="on"
       install: 
         - docker-compose up -d rabbitmq
         - cd src/go/pkg/amqpclient
