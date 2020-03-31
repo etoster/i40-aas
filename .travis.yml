@@ -54,7 +54,7 @@ jobs:
         - npm install -g newman
 #        - make 
 #        - docker-compose -f docker-compose.yml up -d --force-recreate
-        - yes | make install 
+        - yes | docker-compose -f docker-compose.yml up -d 
         - while [ ! nc -z "localhost" "5672" ]; do
             sleep 1;
           done
