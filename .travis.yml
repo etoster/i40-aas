@@ -57,7 +57,10 @@ jobs:
 #        - docker-compose up -d rabbitmq
 #        - nc -z localhost 5672
 #        - echo $?
-        - until nc -z localhost 5672; do sleep 0.1; echo "wait for rabbitmq"; done
+        - until nc -z localhost 4400; do sleep 0.1; echo "wait for rabbitmq"; done
+        - until nc -z localhost 4500; do sleep 0.1; echo "wait for rabbitmq"; done
+        - until nc -z localhost 4000; do sleep 0.1; echo "wait for rabbitmq"; done
+        - until nc -z localhost 2000; do sleep 0.1; echo "wait for rabbitmq"; done
         - newman run docs/postman/AAS.postman_collection.json
 
 #    - stage: publish
