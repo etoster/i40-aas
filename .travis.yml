@@ -57,7 +57,7 @@ jobs:
         - yes | docker-compose -f docker-compose.yml up -d 
 #        - nc -z localhost 5672
 #        - echo $?
-        - while ! nc -z localhost 5672; do
+        - while ! [ nc -z localhost 5672 ]; do
             sleep 1;
           done
         - newman run docs/postman/AAS.postman_collection.json
