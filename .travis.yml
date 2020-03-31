@@ -7,7 +7,6 @@ if: (branch = ci-rework OR branch = master) AND (type = push OR type = pull_requ
 
 env:
   global:
-    - SVC_PREFIX="${AZURE_CONTAINER_REGISTRY}/i40-aas-"
     - BUILD_TAG=$(cat .git/refs/heads/${TRAVIS_BRANCH})
 
 stages:
@@ -66,12 +65,5 @@ before_install:
   - make --version
   - docker --version
   - docker-compose --version
-  - if [ $TRAVIS_BRANCH = master ]; then
-      SVC_PREFIX="sapi40/i40-aas-";
-      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
-    else
-      openssl aes-256-cbc -K $encrypted_260941c77da3_key -iv $encrypted_260941c77da3_iv -in azure-service-principal.txt.enc -out azure-service-principal.txt -d;
-      cat azure-service-principal.txt | docker login $AZURE_CONTAINER_REGISTRY -u $service_principal_id --password-stdin;
-    fi
 
 
