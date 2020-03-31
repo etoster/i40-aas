@@ -52,9 +52,10 @@ jobs:
       node_js: lts/*
       install: 
         - npm install -g newman
-        - make 
-        - docker-compose -f docker-compose.yml up -d --force-recreate
-        - while ! nc -z localhost 5672; do
+#        - make 
+#        - docker-compose -f docker-compose.yml up -d --force-recreate
+        - make install 
+        - while [ ! nc -z "localhost" "5672" ]; do
             sleep 1;
           done
         - newman run docs/postman/AAS.postman_collection.json
