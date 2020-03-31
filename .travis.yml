@@ -57,7 +57,7 @@ jobs:
         - docker-compose up -d rabbitmq
 #        - nc -z localhost 5672
 #        - echo $?
-        - while ! nc -z localhost 5672; do
+        - until nc -z localhost 5672; do
             sleep 1;
             echo "sleep";
           done
