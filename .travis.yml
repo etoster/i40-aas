@@ -25,7 +25,7 @@ jobs:
       install: 
         - docker-compose up -d rabbitmq
         - cd src/ts/pkg/AMQP-Client
-        - npm ci 
+        - npm i 
       script:
         - npm test 
  #       - docker-compose stop rabbitmq
