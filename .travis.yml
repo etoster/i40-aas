@@ -73,10 +73,11 @@ jobs:
       env: SERVICE=onboarding-skill
       install: 
         - cd src/ts/cmd/${SERVICE}
-        - ./integration-test-setup 
         - npm i
       script: 
         - npm test
+        - ./integration-test-setup 
+        - sleep 30
         - npm run test-with-integration
         - ./integration-test-teardown
 
@@ -86,11 +87,9 @@ jobs:
       env: SERVICE=data-manager
       install: 
         - cd src/ts/cmd/${SERVICE}
-#        - ./integration-test-setup 
         - npm i
       script: 
         - npm test
-#        - ./integration-test-teardown
 
     - stage: unit-test
       language: node_js
@@ -98,11 +97,9 @@ jobs:
       env: SERVICE=adapter-registry
       install: 
         - cd src/ts/cmd/${SERVICE}
-#        - ./integration-test-setup 
         - npm i
       script: 
         - npm test
-#        - ./integration-test-teardown
 
     - stage: unit-test
       language: node_js
@@ -110,10 +107,11 @@ jobs:
       env: SERVICE=endpoint-registry
       install: 
         - cd src/ts/cmd/${SERVICE}
-        - ./integration-test-setup 
         - npm i
       script: 
         - npm test
+        - ./integration-test-setup 
+        - sleep 30 
         - npm run test-with-integration
         - ./integration-test-teardown
 
@@ -123,11 +121,9 @@ jobs:
       env: SERVICE=https-endpoint-egress
       install: 
         - cd src/ts/cmd/${SERVICE}
-#        - ./integration-test-setup 
         - npm i
       script: 
         - npm test
-#        - ./integration-test-teardown
 
     - stage: unit-test
       language: node_js
@@ -135,11 +131,9 @@ jobs:
       env: SERVICE=https-endpoint-ingress
       install: 
         - cd src/ts/cmd/${SERVICE}
-#        - ./integration-test-setup 
         - npm i
       script: 
         - npm test
-#        - ./integration-test-teardown
 
     - stage: unit-test
       language: node_js
@@ -147,9 +141,10 @@ jobs:
       env: SERVICE=storage-adapter-mongodb
       install: 
         - cd src/ts/cmd/${SERVICE}
-        - ./integration-test-setup 
         - npm i
       script: 
+        - ./integration-test-setup 
+        - sleep 30
         - npm run test-with-integration
         - ./integration-test-teardown
 
