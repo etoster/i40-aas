@@ -60,6 +60,7 @@ jobs:
 #        - while ! nc -z localhost 4400; do sleep 0.1; echo "wait for rabbitmq"; done
 #        - while ! nc -z localhost 4407; do sleep 0.1; echo "wait for rabbitmq"; done
         - sleep 60
+      script:
         - newman run docs/postman/AAS.postman_collection.json
 
 #    - stage: publish
