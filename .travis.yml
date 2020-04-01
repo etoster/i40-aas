@@ -47,23 +47,25 @@ jobs:
 #        - go test 
 #        - docker-compose stop rabbitmq 
 
-    - stage: lib-test
-      language: go 
-      env: GO111MODULE="on"
-      install: 
-        - cd src/go/pkg/interaction
-        - go mod download
-      script:
-        - go test 
+## WORKS
+#    - stage: lib-test
+#      language: go 
+#      env: GO111MODULE="on"
+#      install: 
+#        - cd src/go/pkg/interaction
+#        - go mod download
+#      script:
+#        - go test 
 
-    - stage: lib-test
-      language: go 
-      env: GO111MODULE="on"
-      install: 
-        - cd src/go/pkg/logging
-        - go mod download
-      script:
-        - go test 
+## WORKS
+#    - stage: lib-test
+#      language: go 
+#      env: GO111MODULE="on"
+#      install: 
+#        - cd src/go/pkg/logging
+#        - go mod download
+#      script:
+#        - go test 
 
     - stage: unit-test
       language: node_js
