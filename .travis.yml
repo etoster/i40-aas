@@ -8,10 +8,15 @@ if: (branch = ci-rework OR branch = master) AND (type = push OR type = pull_requ
 env:
   global:
     - BUILD_TAG=$(cat .git/refs/heads/${TRAVIS_BRANCH})
+      
+before_install:
+  - make --version
+  - docker --version
+  - docker-compose --version
 
 stages:
   - lib-test
-  - test
+  - unit-test
   - integration-test
   - name: publish
     if: type = push
@@ -42,38 +47,156 @@ jobs:
 #        - go test 
 #        - docker-compose stop rabbitmq 
 
-#    - stage: unit-test
-#      env: 
-#      install: 
-#        - make test-single
+    - stage: lib-test
+      language: go 
+      env: GO111MODULE="on"
+      install: 
+        - cd src/go/pkg/interaction
+        - go mod download
+      script:
+        - go test 
 
-    - stage: integration-test
+    - stage: lib-test
+      language: go 
+      env: GO111MODULE="on"
+      install: 
+        - cd src/go/pkg/logging
+        - go mod download
+      script:
+        - go test 
+
+    - stage: unit-test
       language: node_js
       node_js: lts/*
+      env: SERVICE=onboarding-skill
       install: 
-        - npm install -g newman
-#        - make 
-        - docker-compose -f docker-compose.yml up -d --force-recreate
+        - cd src/ts/cmd/${SERVICE}
+        - ./integration-test-setup 
+        - npm i
+      script: 
+        - npm test
+        - ./integration-test-teardown
+
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=data-manager
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+#        - ./integration-test-setup 
+        - npm i
+      script: 
+        - npm test
+#        - ./integration-test-teardown
+
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=adapter-registry
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+#        - ./integration-test-setup 
+        - npm i
+      script: 
+        - npm test
+#        - ./integration-test-teardown
+
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=endpoint-registry
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - ./integration-test-setup 
+        - npm i
+      script: 
+        - npm test
+        - ./integration-test-teardown
+
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=https-endpoint-egress
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+#        - ./integration-test-setup 
+        - npm i
+      script: 
+        - npm test
+#        - ./integration-test-teardown
+
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=https-endpoint-ingress
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+#        - ./integration-test-setup 
+        - npm i
+      script: 
+        - npm test
+#        - ./integration-test-teardown
+
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=storage-adapter-mongodb
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - ./integration-test-setup 
+        - npm i
+      script: 
+        - npm test
+        - ./integration-test-teardown
+
+    - stage: unit-test
+      language: go 
+      env: GO111MODULE="on" SERVICE=grpc-endpoint-ingress
+      install: 
 #        - docker-compose up -d rabbitmq
-#        - nc -z localhost 5672
-#        - echo $?
-#        - while ! nc -z localhost 4400; do sleep 0.1; echo "wait for rabbitmq"; done
-#        - while ! nc -z localhost 4407; do sleep 0.1; echo "wait for rabbitmq"; done
-        - sleep 60
+        - cd src/go/cmd/${SERVICE}
+        - go mod download
       script:
-        - newman run docs/postman/AAS.postman_collection.json
+        - go test 
+#        - docker-compose stop rabbitmq 
+
+    - stage: unit-test
+      language: go 
+      env: GO111MODULE="on" SERVICE=grpc-endpoint-egress
+      install: 
+#        - docker-compose up -d rabbitmq
+        - cd src/go/cmd/${SERVICE}
+        - go mod download
+      script:
+        - go test 
+#        - docker-compose stop rabbitmq 
+
+    - stage: unit-test
+      language: go 
+      env: GO111MODULE="on" SERVICE=endpoint-resolver
+      install: 
+#        - docker-compose up -d rabbitmq
+        - cd src/go/cmd/${SERVICE}
+        - go mod download
+      script:
+        - go test 
+#        - docker-compose stop rabbitmq 
+
+## WORKS
+## Postman Collection needs test scripts
+#    - stage: integration-test
+#      language: node_js
+#      node_js: lts/*
+#      install: 
+#        - npm install -g newman
+#        - make 
+#        - docker-compose -f docker-compose.yml up -d --force-recreate
+#        - sleep 60
+#      script:
+#        - newman run docs/postman/AAS.postman_collection.json
 
 #    - stage: publish
 #      install:
 #        - make push-single
 
 # an welcher Stage push single?
-      
-
-
-before_install:
-  - make --version
-  - docker --version
-  - docker-compose --version
-
-
