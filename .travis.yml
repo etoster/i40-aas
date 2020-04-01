@@ -77,6 +77,7 @@ jobs:
         - npm i
       script: 
         - npm test
+        - npm run test-with-integration
         - ./integration-test-teardown
 
     - stage: unit-test
@@ -113,6 +114,7 @@ jobs:
         - npm i
       script: 
         - npm test
+        - npm run test-with-integration
         - ./integration-test-teardown
 
     - stage: unit-test
@@ -148,41 +150,35 @@ jobs:
         - ./integration-test-setup 
         - npm i
       script: 
-        - npm test
+        - npm run test-with-integration
         - ./integration-test-teardown
 
     - stage: unit-test
       language: go 
       env: GO111MODULE="on" SERVICE=grpc-endpoint-ingress
       install: 
-#        - docker-compose up -d rabbitmq
         - cd src/go/cmd/${SERVICE}
         - go mod download
       script:
         - go test 
-#        - docker-compose stop rabbitmq 
 
     - stage: unit-test
       language: go 
       env: GO111MODULE="on" SERVICE=grpc-endpoint-egress
       install: 
-#        - docker-compose up -d rabbitmq
         - cd src/go/cmd/${SERVICE}
         - go mod download
       script:
         - go test 
-#        - docker-compose stop rabbitmq 
 
     - stage: unit-test
       language: go 
       env: GO111MODULE="on" SERVICE=endpoint-resolver
       install: 
-#        - docker-compose up -d rabbitmq
         - cd src/go/cmd/${SERVICE}
         - go mod download
       script:
         - go test 
-#        - docker-compose stop rabbitmq 
 
 ## WORKS
 ## Postman Collection needs test scripts
