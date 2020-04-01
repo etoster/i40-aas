@@ -23,12 +23,12 @@ jobs:
 #      language: node_js
 #      node_js: lts/*
 #      install: 
-#        - docker-compose up -d rabbitmq
 #        - cd src/ts/pkg/AMQP-Client
-#        - npm i 
+#        - ./test/integration-test-setup 
+#        - npm i
 #      script:
 #        - npm test 
-#        - docker-compose stop rabbitmq
+#        - ./test/integration-test-teardown
 
 ## WORKS
 #    - stage: lib-test
