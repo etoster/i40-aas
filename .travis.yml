@@ -199,7 +199,7 @@ jobs:
         - make build-single
 
 ## WORKS
-    - stage: unit-test #integration-test
+    - stage: integration-test
       language: node_js
       node_js: lts/*
       install: 
