@@ -77,12 +77,14 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-      script: 
         - npm test
         - ./integration-test-setup 
         - sleep 30
         - npm run test-with-integration
         - ./integration-test-teardown
+      script: 
+        - cd - 
+        - make build-single
 
     - stage: unit-test
       language: node_js
@@ -91,8 +93,9 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-      script: 
         - npm test
+      script: 
+        - cd -
         - make build-single
 
     - stage: unit-test
@@ -102,8 +105,10 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-      script: 
         - npm test
+      script: 
+        - cd - 
+        - make build-single
 
     - stage: unit-test
       language: node_js
@@ -112,12 +117,14 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-      script: 
         - npm test
         - ./integration-test-setup 
         - sleep 30 
         - npm run test-with-integration
         - ./integration-test-teardown
+      script: 
+        - cd - 
+        - make build-single
 
     - stage: unit-test
       language: node_js
@@ -126,8 +133,10 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-      script: 
         - npm test
+      script: 
+        - cd - 
+        - make build-single
 
     - stage: unit-test
       language: node_js
@@ -136,8 +145,10 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-      script: 
         - npm test
+      script: 
+        - cd - 
+        - make build-single
 
     - stage: unit-test
       language: node_js
@@ -146,11 +157,13 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-      script: 
         - ./integration-test-setup 
         - sleep 30
         - npm run test-with-integration
         - ./integration-test-teardown
+      script: 
+        - cd - 
+        - make build-single
 
     - stage: unit-test
       language: go 
@@ -158,8 +171,10 @@ jobs:
       install: 
         - cd src/go/cmd/${SERVICE}
         - go mod download
-      script:
-        - go test 
+        - go test
+      script: 
+        - cd - 
+        - make build-single
 
     - stage: unit-test
       language: go 
@@ -167,8 +182,10 @@ jobs:
       install: 
         - cd src/go/cmd/${SERVICE}
         - go mod download
-      script:
-        - go test 
+        - go test
+      script: 
+        - cd - 
+        - make build-single
 
     - stage: unit-test
       language: go 
@@ -176,8 +193,10 @@ jobs:
       install: 
         - cd src/go/cmd/${SERVICE}
         - go mod download
-      script:
-        - go test 
+        - go test
+      script: 
+        - cd - 
+        - make build-single
 
 ## WORKS
     - stage: unit-test #integration-test
