@@ -16,56 +16,57 @@ before_install:
 
 stages:
   - lib-test
-#  - unit-test
-#  - integration-test
+  - unit-test
+  - integration-test
   - name: publish
     if: type = push
 
 jobs: 
   include:
-## Tests run but are broken
-#    - stage: lib-test
-#      language: node_js
-#      node_js: lts/*
-#      install: 
-#        - cd src/ts/pkg/AMQP-Client
-#        - ./test/integration-test-setup 
-#        - npm i
-#      script:
-#        - npm test 
-#        - ./test/integration-test-teardown
+# Tests run but are broken
+    - stage: unit-test #lib-test
+      language: node_js
+      node_js: lts/*
+      install: 
+        - cd src/ts/pkg/AMQP-Client
+        - npm i
+      script:
+        - ./test/integration-test-setup 
+        - sleep 30
+        - npm test 
+        - ./test/integration-test-teardown
 
-## WORKS
-#    - stage: lib-test
-#      language: go 
-#      env: GO111MODULE="on"
-#      install: 
-#        - docker-compose up -d rabbitmq
-#        - cd src/go/pkg/amqpclient
-#        - go mod download
-#      script:
-#        - go test 
-#        - docker-compose stop rabbitmq 
+# WORKS
+    - stage: unit-test #lib-test
+      language: go 
+      env: GO111MODULE="on"
+      install: 
+        - docker-compose up -d rabbitmq
+        - cd src/go/pkg/amqpclient
+        - go mod download
+      script:
+        - go test 
+        - docker-compose stop rabbitmq 
 
-## WORKS
-#    - stage: lib-test
-#      language: go 
-#      env: GO111MODULE="on"
-#      install: 
-#        - cd src/go/pkg/interaction
-#        - go mod download
-#      script:
-#        - go test 
+# WORKS
+    - stage: unit-test #lib-test
+      language: go 
+      env: GO111MODULE="on"
+      install: 
+        - cd src/go/pkg/interaction
+        - go mod download
+      script:
+        - go test 
 
-## WORKS
-#    - stage: lib-test
-#      language: go 
-#      env: GO111MODULE="on"
-#      install: 
-#        - cd src/go/pkg/logging
-#        - go mod download
-#      script:
-#        - go test 
+# WORKS
+    - stage: unit-test #lib-test
+      language: go 
+      env: GO111MODULE="on"
+      install: 
+        - cd src/go/pkg/logging
+        - go mod download
+      script:
+        - go test 
 
     - stage: unit-test
       language: node_js
@@ -176,17 +177,16 @@ jobs:
         - go test 
 
 ## WORKS
-## Postman Collection needs test scripts
-#    - stage: integration-test
-#      language: node_js
-#      node_js: lts/*
-#      install: 
-#        - npm install -g newman
-#        - make 
-#        - docker-compose -f docker-compose.yml up -d --force-recreate
-#        - sleep 60
-#      script:
-#        - newman run docs/postman/AAS.postman_collection.json
+    - stage: unit-test #integration-test
+      language: node_js
+      node_js: lts/*
+      install: 
+        - npm install -g newman
+        - make 
+        - docker-compose -f docker-compose.yml up -d --force-recreate
+        - sleep 60
+      script:
+        - newman run docs/postman/AAS.postman_collection.json
 
 #    - stage: publish
 #      install:
