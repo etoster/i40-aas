@@ -18,6 +18,8 @@ stages:
   - lib-test
   - unit-test
   - integration-test
+# use as build stage
+#  - test
   - name: publish
     if: type = push
 
@@ -91,6 +93,7 @@ jobs:
         - npm i
       script: 
         - npm test
+        - make build-single
 
     - stage: unit-test
       language: node_js
