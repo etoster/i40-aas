@@ -7,36 +7,60 @@ if: (branch = ci-rework OR branch = master) AND (type = push OR type = pull_requ
 
 env:
   global:
+    - SVC_PREFIX="${AZURE_CONTAINER_REGISTRY}/i40-aas-"
     - BUILD_TAG=$(cat .git/refs/heads/${TRAVIS_BRANCH})
+  matrix:
+    - SERVICE=adapter-registry
+    - SERVICE=data-manager
+    - SERVICE=endpoint-registry
+    - SERVICE=https-endpoint-egress
+    - SERVICE=https-endpoint-ingress
+    - SERVICE=onboarding-skill
+    - SERVICE=storage-adapter-mongodb
+    - SERVICE=grpc-endpoint-ingress
+    - SERVICE=grpc-endpoint-egress
+    - SERVICE=initializer
+    - SERVICE=endpoint-resolver
       
 before_install:
   - make --version
   - docker --version
   - docker-compose --version
 
+install: 
+  - if [ $TRAVIS_BRANCH = master ]; then
+      SVC_PREFIX="sapi40/i40-aas-";
+      echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin;
+    else
+      openssl aes-256-cbc -K $encrypted_260941c77da3_key -iv $encrypted_260941c77da3_iv -in azure-service-principal.txt.enc -out azure-service-principal.txt -d;
+      cat azure-service-principal.txt | docker login $AZURE_CONTAINER_REGISTRY -u $service_principal_id --password-stdin;
+    fi
+  - make build-single
+  - if [ $TRAVIS_EVENT_TYPE = push ]; then
+      make push-single;
+    fi
+
 stages:
   - lib-test
   - unit-test
   - integration-test
-# use as build stage
-#  - test
-  - name: publish
+  - test # use as build stage
+  - name: deploy
     if: type = push
 
 jobs: 
   include:
-# Tests run but are broken
+# BROKEN
     - stage: unit-test #lib-test
       language: node_js
       node_js: lts/*
       install: 
         - cd src/ts/pkg/AMQP-Client
-        - npm i
-      script:
+        - npm install
         - ./test/integration-test-setup 
         - sleep 30
-        - npm test 
-        - ./test/integration-test-teardown
+      script:
+        - npm run test
 
 # WORKS
     - stage: unit-test #lib-test
@@ -48,7 +72,6 @@ jobs:
         - go mod download
       script:
         - go test 
-        - docker-compose stop rabbitmq 
 
 # WORKS
     - stage: unit-test #lib-test
@@ -76,15 +99,12 @@ jobs:
       env: SERVICE=onboarding-skill
       install: 
         - cd src/ts/cmd/${SERVICE}
-        - npm i
-        - npm test
+        - npm install
         - ./integration-test-setup 
         - sleep 30
-        - npm run test-with-integration
-        - ./integration-test-teardown
       script: 
-        - cd - 
-        - make build-single
+        - npm run test
+        - npm run test-with-integration
 
     - stage: unit-test
       language: node_js
@@ -92,11 +112,10 @@ jobs:
       env: SERVICE=data-manager
       install: 
         - cd src/ts/cmd/${SERVICE}
-        - npm i
-        - npm test
+        - npm install
       script: 
-        - cd -
-        - make build-single
+        - npm test
+
 
     - stage: unit-test
       language: node_js
@@ -104,11 +123,9 @@ jobs:
       env: SERVICE=adapter-registry
       install: 
         - cd src/ts/cmd/${SERVICE}
-        - npm i
-        - npm test
+        - npm install
       script: 
-        - cd - 
-        - make build-single
+        - npm test
 
     - stage: unit-test
       language: node_js
@@ -117,14 +134,11 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-        - npm test
         - ./integration-test-setup 
         - sleep 30 
-        - npm run test-with-integration
-        - ./integration-test-teardown
       script: 
-        - cd - 
-        - make build-single
+        - npm run test
+        - npm run test-with-integration
 
     - stage: unit-test
       language: node_js
@@ -133,10 +147,8 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-        - npm test
       script: 
-        - cd - 
-        - make build-single
+        - npm test
 
     - stage: unit-test
       language: node_js
@@ -145,10 +157,8 @@ jobs:
       install: 
         - cd src/ts/cmd/${SERVICE}
         - npm i
-        - npm test
       script: 
-        - cd - 
-        - make build-single
+        - npm test
 
     - stage: unit-test
       language: node_js
@@ -159,11 +169,8 @@ jobs:
         - npm i
         - ./integration-test-setup 
         - sleep 30
-        - npm run test-with-integration
-        - ./integration-test-teardown
       script: 
-        - cd - 
-        - make build-single
+        - npm run test-with-integration
 
     - stage: unit-test
       language: go 
@@ -171,10 +178,8 @@ jobs:
       install: 
         - cd src/go/cmd/${SERVICE}
         - go mod download
-        - go test
       script: 
-        - cd - 
-        - make build-single
+        - go test
 
     - stage: unit-test
       language: go 
@@ -182,10 +187,8 @@ jobs:
       install: 
         - cd src/go/cmd/${SERVICE}
         - go mod download
-        - go test
       script: 
-        - cd - 
-        - make build-single
+        - go test
 
     - stage: unit-test
       language: go 
@@ -193,10 +196,8 @@ jobs:
       install: 
         - cd src/go/cmd/${SERVICE}
         - go mod download
-        - go test
       script: 
-        - cd - 
-        - make build-single
+        - go test
 
 ## WORKS
     - stage: integration-test
@@ -210,8 +211,27 @@ jobs:
       script:
         - newman run docs/postman/AAS.postman_collection.json
 
-#    - stage: publish
-#      install:
-#        - make push-single
-
-# an welcher Stage push single?
+    - stage: deploy
+      before_install:
+        - sudo apt-get update 
+        - sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
+        - curl -sL https://packages.microsoft.com/keys/microsoft.asc | 
+            gpg --dearmor | 
+            sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+        - AZ_REPO=$(lsb_release -cs)
+        - echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | 
+            sudo tee /etc/apt/sources.list.d/azure-cli.list
+        - sudo apt-get update && sudo apt-get install azure-cli
+        - curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.10/bin/linux/amd64/kubectl
+        - chmod +x ./kubectl
+        - sudo mv ./kubectl /usr/local/bin/kubectl
+#        - (AZ_PASS=$(cat azure-service-principal.txt) && az login --service-principal -u $service_principal_id -p $AZ_PASS --tenant $SAP_TENANT)
+#        - az aks get-credentials -n i40aas -g i40-aas
+#        - kubectl get pods -n aas-${TRAVIS_BRANCH}
+        - curl -LO https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
+        - tar -zxvf helm-v3.1.2-linux-amd64.tar.gz
+        - sudo mv linux-amd64/helm /usr/local/bin/helm
+      install:
+        - az version
+        - kubectl config get-contexts
+        - helm version 
