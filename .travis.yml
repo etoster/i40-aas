@@ -158,15 +158,19 @@ jobs:
       script: 
         - npm test
 
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=https-endpoint-ingress
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm i
-#      script: 
-#        - npm test
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=https-endpoint-ingress
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - cd ./node_modules/AMQP-Client
+        - npm install
+        - npm run build
+        - cd ../../
+      script: 
+        - npm test
 
 #    - stage: unit-test
 #      language: node_js
