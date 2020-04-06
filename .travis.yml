@@ -101,6 +101,7 @@ jobs:
         - cd src/ts/cmd/${SERVICE}
         - npm install
         - cd ./node_modules/AMQP-Client
+        - npm install
         - npm run build
         - cd ../../
         - source ./integration-test-setup 
@@ -151,6 +152,7 @@ jobs:
         - cd src/ts/cmd/${SERVICE}
         - npm install
         - cd ./node_modules/AMQP-Client
+        - npm install
         - npm run build
         - cd ../../
       script: 
