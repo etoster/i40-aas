@@ -1,0 +1,3 @@
+#source ./integration-test-setup
+export CORE_DATA_MANAGER_USER=test
+export CORE_DATA_MANAGER_PASSWORD=test

@@ -110,15 +110,16 @@ jobs:
         - npm run test
         - npm run test-with-integration
 
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=data-manager
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm install
-#      script: 
-#        - npm test
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=data-manager
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - source ./integration-test-setup 
+      script: 
+        - npm test
 
 
 #    - stage: unit-test
