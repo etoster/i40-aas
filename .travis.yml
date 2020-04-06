@@ -101,6 +101,9 @@ jobs:
         - cd src/ts/cmd/${SERVICE}
         - cd ../../pkg/AMQP-Client && npm install && npm run build && cd ../../cmd/onboarding-skill
         - npm install
+        - cd ./node_modules/AMQP-Client
+        - npm run build
+        - cd ../../
         - ./integration-test-setup 
         - sleep 30
       script: 
