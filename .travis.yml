@@ -99,17 +99,13 @@ jobs:
       env: SERVICE=onboarding-skill
       install: 
         - cd src/ts/cmd/${SERVICE}
-        - cd ../../pkg/AMQP-Client && npm install && npm run build && cd ../../cmd/onboarding-skill
         - npm install
         - cd ./node_modules/AMQP-Client
         - npm run build
         - cd ../../
         - source ./integration-test-setup 
         - sleep 30
-        - echo $SERVICE 
-        - echo $MONGO_INITDB_DATABASE
       script: 
-        - echo $MONGO_INITDB_DATABASE
         - npm run test
         - npm run test-with-integration
 
@@ -147,15 +143,18 @@ jobs:
 #        - npm run test
 #        - npm run test-with-integration
 
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=https-endpoint-egress
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm i
-#      script: 
-#        - npm test
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=https-endpoint-egress
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - cd ./node_modules/AMQP-Client
+        - npm run build
+        - cd ../../
+      script: 
+        - npm test
 
 #    - stage: unit-test
 #      language: node_js
