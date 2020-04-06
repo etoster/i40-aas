@@ -99,7 +99,7 @@ jobs:
       env: SERVICE=onboarding-skill
       install: 
         - cd src/ts/cmd/${SERVICE}
-        - cd /pkg/AMQP-Client && npm install && npm run build && cd /cmd/onboarding-skill
+        - cd ../../pkg/AMQP-Client && npm install && npm run build && cd ../../cmd/onboarding-skill
         - npm install
         - ./integration-test-setup 
         - sleep 30
