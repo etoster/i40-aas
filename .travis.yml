@@ -106,7 +106,10 @@ jobs:
         - cd ../../
         - ./integration-test-setup 
         - sleep 30
+        - echo $SERVICE 
+        - echo $MONGO_INITDB_DATABASE
       script: 
+        - echo $MONGO_INITDB_DATABASE
         - npm run test
         - npm run test-with-integration
 
