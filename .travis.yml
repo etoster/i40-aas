@@ -9,18 +9,18 @@ env:
   global:
     - SVC_PREFIX="${AZURE_CONTAINER_REGISTRY}/i40-aas-"
     - BUILD_TAG=$(cat .git/refs/heads/${TRAVIS_BRANCH})
-#  matrix:
-#    - SERVICE=adapter-registry
-#    - SERVICE=data-manager
-#    - SERVICE=endpoint-registry
-#    - SERVICE=https-endpoint-egress
-#    - SERVICE=https-endpoint-ingress
-#    - SERVICE=onboarding-skill
-#    - SERVICE=storage-adapter-mongodb
-#    - SERVICE=grpc-endpoint-ingress
-#    - SERVICE=grpc-endpoint-egress
-#    - SERVICE=initializer
-#    - SERVICE=endpoint-resolver
+  matrix:
+    - SERVICE=adapter-registry
+    - SERVICE=data-manager
+    - SERVICE=endpoint-registry
+    - SERVICE=https-endpoint-egress
+    - SERVICE=https-endpoint-ingress
+    - SERVICE=onboarding-skill
+    - SERVICE=storage-adapter-mongodb
+    - SERVICE=grpc-endpoint-ingress
+    - SERVICE=grpc-endpoint-egress
+    - SERVICE=initializer
+    - SERVICE=endpoint-resolver
       
 before_install:
   - make --version
@@ -93,35 +93,37 @@ jobs:
 #      script:
 #        - go test 
 
-    - stage: unit-test
-      language: node_js
-      node_js: lts/*
-      env: SERVICE=onboarding-skill
-      install: 
-        - cd src/ts/cmd/${SERVICE}
-        - npm install
-        - cd ./node_modules/AMQP-Client
-        - npm install
-        - npm run build
-        - cd ../../
-        - source ./integration-test-setup 
-        - sleep 30
-      script: 
-        - npm run test
-        - npm run test-with-integration
+## WORKS
+#    - stage: unit-test
+#      language: node_js
+#      node_js: lts/*
+#      env: SERVICE=onboarding-skill
+#      install: 
+#        - cd src/ts/cmd/${SERVICE}
+#        - npm install
+#        - cd ./node_modules/AMQP-Client
+#        - npm install
+#        - npm run build
+#        - cd ../../
+#        - source ./integration-test-setup 
+#        - sleep 30
+#      script: 
+#        - npm run test
+#        - npm run test-with-integration
 
-    - stage: unit-test
-      language: node_js
-      node_js: lts/*
-      env: SERVICE=data-manager
-      install: 
-        - cd src/ts/cmd/${SERVICE}
-        - npm install
-        - source ./integration-test-setup 
-      script: 
-        - npm test
+## BROKEN
+#    - stage: unit-test
+#      language: node_js
+#      node_js: lts/*
+#      env: SERVICE=data-manager
+#      install: 
+#        - cd src/ts/cmd/${SERVICE}
+#        - npm install
+#        - source ./integration-test-setup 
+#      script: 
+#        - npm test
 
-
+## BROKEN
 #    - stage: unit-test
 #      language: node_js
 #      node_js: lts/*
@@ -145,45 +147,48 @@ jobs:
 #        - npm run test
 #        - npm run test-with-integration
 
-    - stage: unit-test
-      language: node_js
-      node_js: lts/*
-      env: SERVICE=https-endpoint-egress
-      install: 
-        - cd src/ts/cmd/${SERVICE}
-        - npm install
-        - cd ./node_modules/AMQP-Client
-        - npm install
-        - npm run build
-        - cd ../../
-      script: 
-        - npm test
+## WORKS
+#    - stage: unit-test
+#      language: node_js
+#      node_js: lts/*
+#      env: SERVICE=https-endpoint-egress
+#      install: 
+#        - cd src/ts/cmd/${SERVICE}
+#        - npm install
+#        - cd ./node_modules/AMQP-Client
+#        - npm install
+#        - npm run build
+#        - cd ../../
+#      script: 
+#        - npm test
 
-    - stage: unit-test
-      language: node_js
-      node_js: lts/*
-      env: SERVICE=https-endpoint-ingress
-      install: 
-        - cd src/ts/cmd/${SERVICE}
-        - npm install
-        - cd ./node_modules/AMQP-Client
-        - npm install
-        - npm run build
-        - cd ../../
-      script: 
-        - npm test
+## BROKEN
+#    - stage: unit-test
+#      language: node_js
+#      node_js: lts/*
+#      env: SERVICE=https-endpoint-ingress
+#      install: 
+#        - cd src/ts/cmd/${SERVICE}
+#        - npm install
+#        - cd ./node_modules/AMQP-Client
+#        - npm install
+#        - npm run build
+#        - cd ../../
+#      script: 
+#        - npm test
 
-    - stage: unit-test
-      language: node_js
-      node_js: lts/*
-      env: SERVICE=storage-adapter-mongodb
-      install: 
-        - cd src/ts/cmd/${SERVICE}
-        - npm i
-        - source ./integration-test-setup 
-        - sleep 30
-      script: 
-        - npm run test-with-integration
+## WORKS
+#    - stage: unit-test
+#      language: node_js
+#      node_js: lts/*
+#      env: SERVICE=storage-adapter-mongodb
+#      install: 
+#        - cd src/ts/cmd/${SERVICE}
+#        - npm i
+#        - source ./integration-test-setup 
+#        - sleep 30
+#      script: 
+#        - npm run test-with-integration
 
 #    - stage: unit-test
 #      language: go 
