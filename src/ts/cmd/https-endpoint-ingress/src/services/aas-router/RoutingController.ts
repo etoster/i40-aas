@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-import {  publishMessageToBrokerTopic } from "./InteractionHandler";
-import { AmqpClient } from 'AMQP-Client/lib/AmqpClient';
-import * as logger from "winston";
-=======
 import { publishMessageToBrokerTopic } from './InteractionHandler';
 import { AmqpClient } from 'AMQP-Client/lib/AmqpClient';
 import * as logger from 'winston';
->>>>>>> upstream/onboarding-build
 
 let brokerClient: AmqpClient;
 
