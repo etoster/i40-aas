@@ -1,3 +1,4 @@
 #source ./test-setup
 export CORE_INGRESS_HTTP_USER=test
 export CORE_INGRESS_HTTP_PASSWORD=test
+export CORE_INGRESS_HTTP_PORT=2000
