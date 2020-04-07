@@ -57,7 +57,7 @@ jobs:
       install: 
         - cd src/ts/pkg/AMQP-Client
         - npm install
-        - ./test/integration-test-setup 
+        - source ./test/integration-test-setup 
         - sleep 30
       script:
         - npm run test
