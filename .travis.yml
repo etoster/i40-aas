@@ -9,18 +9,18 @@ env:
   global:
     - SVC_PREFIX="${AZURE_CONTAINER_REGISTRY}/i40-aas-"
     - BUILD_TAG=$(cat .git/refs/heads/${TRAVIS_BRANCH})
-  matrix:
-    - SERVICE=adapter-registry
-    - SERVICE=data-manager
-    - SERVICE=endpoint-registry
-    - SERVICE=https-endpoint-egress
-    - SERVICE=https-endpoint-ingress
-    - SERVICE=onboarding-skill
-    - SERVICE=storage-adapter-mongodb
-    - SERVICE=grpc-endpoint-ingress
-    - SERVICE=grpc-endpoint-egress
-    - SERVICE=initializer
-    - SERVICE=endpoint-resolver
+#  matrix:
+#    - SERVICE=adapter-registry
+#    - SERVICE=data-manager
+#    - SERVICE=endpoint-registry
+#    - SERVICE=https-endpoint-egress
+#    - SERVICE=https-endpoint-ingress
+#    - SERVICE=onboarding-skill
+#    - SERVICE=storage-adapter-mongodb
+#    - SERVICE=grpc-endpoint-ingress
+#    - SERVICE=grpc-endpoint-egress
+#    - SERVICE=initializer
+#    - SERVICE=endpoint-resolver
       
 before_install:
   - make --version
@@ -229,27 +229,27 @@ jobs:
 #      script:
 #        - newman run docs/postman/AAS.postman_collection.json
 
-#    - stage: deploy
-#      before_install:
-#        - sudo apt-get update 
-#        - sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
-#        - curl -sL https://packages.microsoft.com/keys/microsoft.asc | 
-#            gpg --dearmor | 
-#            sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
-#        - AZ_REPO=$(lsb_release -cs)
-#        - echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | 
-#            sudo tee /etc/apt/sources.list.d/azure-cli.list
-#        - sudo apt-get update && sudo apt-get install azure-cli
-#        - curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.10/bin/linux/amd64/kubectl
-#        - chmod +x ./kubectl
-#        - sudo mv ./kubectl /usr/local/bin/kubectl
-##        - (AZ_PASS=$(cat azure-service-principal.txt) && az login --service-principal -u $service_principal_id -p $AZ_PASS --tenant $SAP_TENANT)
-##        - az aks get-credentials -n i40aas -g i40-aas
-##        - kubectl get pods -n aas-${TRAVIS_BRANCH}
-#        - curl -LO https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
-#        - tar -zxvf helm-v3.1.2-linux-amd64.tar.gz
-#        - sudo mv linux-amd64/helm /usr/local/bin/helm
-#      install:
-#        - az version
-#        - kubectl config get-contexts
-#        - helm version 
+    - stage: deploy
+      before_install:
+        - sudo apt-get update 
+        - sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
+        - curl -sL https://packages.microsoft.com/keys/microsoft.asc | 
+            gpg --dearmor | 
+            sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+        - AZ_REPO=$(lsb_release -cs)
+        - echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | 
+            sudo tee /etc/apt/sources.list.d/azure-cli.list
+        - sudo apt-get update && sudo apt-get install azure-cli
+        - curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.10/bin/linux/amd64/kubectl
+        - chmod +x ./kubectl
+        - sudo mv ./kubectl /usr/local/bin/kubectl
+        - (AZ_PASS=$(cat azure-service-principal.txt) && az login --service-principal -u $service_principal_id -p $AZ_PASS --tenant $SAP_TENANT)
+        - az aks get-credentials -n i40aas -g i40-aas
+#        - kubectl get pods -n aas-${TRAVIS_BRANCH}
+        - curl -LO https://get.helm.sh/helm-v3.1.2-linux-amd64.tar.gz
+        - tar -zxvf helm-v3.1.2-linux-amd64.tar.gz
+        - sudo mv linux-amd64/helm /usr/local/bin/helm
+      install:
+        - az version
+        - kubectl config get-contexts
+        - helm version 
