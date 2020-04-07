@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import request from "request-promise";
-import * as logger from "winston";
-=======
 import request from 'request-promise';
 import * as logger from 'winston';
->>>>>>> upstream/onboarding-build
 import { AmqpClient } from 'AMQP-Client/lib/AmqpClient';
 
 export const publishMessageToBrokerTopic = async (

@@ -1,14 +1,7 @@
-<<<<<<< HEAD
-import express from "express";
-import { applyMiddleware, applyRoutes } from "./utils";
-import middleware from "./middleware";
-import errorHandlers from "./middleware/errorHandlers";
-=======
 import express from 'express';
 import { applyMiddleware, applyRoutes } from './utils';
 import middleware from './middleware';
 import errorHandlers from './middleware/errorHandlers';
->>>>>>> upstream/onboarding-build
 import { AmqpClient } from 'AMQP-Client/lib/AmqpClient';
 
 import { initiateBroker } from './services/aas-router/RoutingController';

@@ -1,11 +1,6 @@
 import { AmqpClient } from 'AMQP-Client/lib/AmqpClient';
-<<<<<<< HEAD
-import { BrokerMessageInterpreter } from "./messaging/BrokerMessageInterpreter";
-import { logger } from "./utils/log";
-=======
 import { BrokerMessageInterpreter } from './messaging/BrokerMessageInterpreter';
 import { logger } from './utils/log';
->>>>>>> upstream/onboarding-build
 
 // if (process.env.NODE_ENV !== 'production') {
 const dotenv = require('dotenv');
