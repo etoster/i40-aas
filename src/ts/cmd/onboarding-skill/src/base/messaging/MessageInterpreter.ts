@@ -52,8 +52,8 @@ class MessageInterpreter implements IMessageReceiver {
       let requiredAndMissingData: string[] = [
         senderRole,
         messageType,
-        conversationId
-      ].filter(e => e === undefined || e.length === 0);
+        conversationId,
+      ].filter((e) => e === undefined || e.length === 0);
 
       if (requiredAndMissingData.length > 0) {
         this.handleUnintelligibleMessage(data, requiredAndMissingData);
