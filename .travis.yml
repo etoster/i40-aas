@@ -93,23 +93,23 @@ jobs:
 #      script:
 #        - go test 
 
-## WORKS
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=onboarding-skill
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm install
-#        - cd ./node_modules/AMQP-Client
-#        - npm install
-#        - npm run build
-#        - cd ../../
-#        - source ./integration-test-setup 
-#        - sleep 30
-#      script: 
-#        - npm run test
-#        - npm run test-with-integration
+# WORKS
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=onboarding-skill
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - cd ./node_modules/AMQP-Client
+        - npm install
+        - npm run build
+        - cd ../../
+        - source ./integration-test-setup 
+        - sleep 30
+      script: 
+        - npm run test
+        - npm run test-with-integration
 
 ## BROKEN
 #    - stage: unit-test
@@ -147,35 +147,35 @@ jobs:
 #        - npm run test
 #        - npm run test-with-integration
 
-## WORKS
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=https-endpoint-egress
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm install
-#        - cd ./node_modules/AMQP-Client
-#        - npm install
-#        - npm run build
-#        - cd ../../
-#      script: 
-#        - npm test
+# WORKS
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=https-endpoint-egress
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - cd ./node_modules/AMQP-Client
+        - npm install
+        - npm run build
+        - cd ../../
+      script: 
+        - npm test
 
-## BROKEN
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=https-endpoint-ingress
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm install
-#        - cd ./node_modules/AMQP-Client
-#        - npm install
-#        - npm run build
-#        - cd ../../
-#      script: 
-#        - npm test
+# BROKEN
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=https-endpoint-ingress
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - cd ./node_modules/AMQP-Client
+        - npm install
+        - npm run build
+        - cd ../../
+      script: 
+        - npm test
 
 ## WORKS
 #    - stage: unit-test
