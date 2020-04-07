@@ -51,16 +51,16 @@ stages:
 jobs: 
   include:
 # BROKEN
-#    - stage: unit-test #lib-test
-#      language: node_js
-#      node_js: lts/*
-#      install: 
-#        - cd src/ts/pkg/AMQP-Client
-#        - npm install
-#        - ./test/integration-test-setup 
-#        - sleep 30
-#      script:
-#        - npm run test
+    - stage: unit-test #lib-test
+      language: node_js
+      node_js: lts/*
+      install: 
+        - cd src/ts/pkg/AMQP-Client
+        - npm install
+        - ./test/integration-test-setup 
+        - sleep 30
+      script:
+        - npm run test
 
 # WORKS
 #    - stage: unit-test #lib-test
