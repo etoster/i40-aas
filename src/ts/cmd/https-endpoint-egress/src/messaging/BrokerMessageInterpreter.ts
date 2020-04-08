@@ -1,18 +1,9 @@
-<<<<<<< HEAD
 import { IMessageReceiver } from './interfaces/IMessageReceiver';
 import { AmqpClient, Subscription } from 'AMQP-Client/lib/AmqpClient';
 import { IResolverMessage } from './interfaces/IResolverMessage';
 import { AASConnector } from './AASConnector';
 import { WebClient } from '../WebClient/WebClient';
 import { logger } from './../utils/log';
-=======
-import { IMessageReceiver } from "./interfaces/IMessageReceiver";
-import { AmqpClient, Subscription } from 'AMQP-Client/lib/AmqpClient';
-import { IResolverMessage } from "./interfaces/IResolverMessage";
-import { AASConnector } from "./AASConnector";
-import { WebClient } from "../WebClient/WebClient";
-import { logger } from "./../utils/log";
->>>>>>> upstream/repair-tests
 
 /*
 Class that receives the the Interaction Messages received from the broker.
