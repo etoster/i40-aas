@@ -50,48 +50,48 @@ stages:
 
 jobs: 
   include:
-## WORKS
-#    - stage: unit-test #lib-test
-#      language: node_js
-#      node_js: lts/*
-#      install: 
-#        - cd src/ts/pkg/AMQP-Client
-#        - npm install
-#        - source ./test/integration-test-setup 
-#        - sleep 30
-#      script:
-#        - npm run test
+# WORKS
+    - stage: unit-test #lib-test
+      language: node_js
+      node_js: lts/*
+      install: 
+        - cd src/ts/pkg/AMQP-Client
+        - npm install
+        - source ./test/integration-test-setup 
+        - sleep 30
+      script:
+        - npm run test
 
 # WORKS
-#    - stage: unit-test #lib-test
-#      language: go 
-#      env: GO111MODULE="on"
-#      install: 
-#        - docker-compose up -d rabbitmq
-#        - cd src/go/pkg/amqpclient
-#        - go mod download
-#      script:
-#        - go test 
+    - stage: unit-test #lib-test
+      language: go 
+      env: GO111MODULE="on"
+      install: 
+        - docker-compose up -d rabbitmq
+        - cd src/go/pkg/amqpclient
+        - go mod download
+      script:
+        - go test 
 
 # WORKS
-#    - stage: unit-test #lib-test
-#      language: go 
-#      env: GO111MODULE="on"
-#      install: 
-#        - cd src/go/pkg/interaction
-#        - go mod download
-#      script:
-#        - go test 
+    - stage: unit-test #lib-test
+      language: go 
+      env: GO111MODULE="on"
+      install: 
+        - cd src/go/pkg/interaction
+        - go mod download
+      script:
+        - go test 
 
 # WORKS
-#    - stage: unit-test #lib-test
-#      language: go 
-#      env: GO111MODULE="on"
-#      install: 
-#        - cd src/go/pkg/logging
-#        - go mod download
-#      script:
-#        - go test 
+    - stage: unit-test #lib-test
+      language: go 
+      env: GO111MODULE="on"
+      install: 
+        - cd src/go/pkg/logging
+        - go mod download
+      script:
+        - go test 
 
 # WORKS
     - stage: unit-test
@@ -112,40 +112,41 @@ jobs:
         - npm run test-with-integration
 
 ## BROKEN
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=data-manager
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm install
-#        - source ./integration-test-setup 
-#      script: 
-#        - npm test
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=data-manager
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - source ./integration-test-setup 
+      script: 
+        - npm test
 
 ## BROKEN
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=adapter-registry
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm install
-#      script: 
-#        - npm test
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=adapter-registry
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+      script: 
+        - npm test
 
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=endpoint-registry
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm i
-#        - ./integration-test-setup 
-#        - sleep 30 
-#      script: 
-#        - npm run test
-#        - npm run test-with-integration
+## WORKS
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=endpoint-registry
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - source ./integration-test-setup 
+        - sleep 30 
+      script: 
+        - npm run test
+        - npm run test-with-integration
 
 # WORKS
     - stage: unit-test
@@ -176,20 +177,20 @@ jobs:
         - cd ../../
         - source ./test-setup
       script: 
-        - npm test
+        - npm run itest
 
 ## WORKS
-#    - stage: unit-test
-#      language: node_js
-#      node_js: lts/*
-#      env: SERVICE=storage-adapter-mongodb
-#      install: 
-#        - cd src/ts/cmd/${SERVICE}
-#        - npm i
-#        - source ./integration-test-setup 
-#        - sleep 30
-#      script: 
-#        - npm run test-with-integration
+    - stage: unit-test
+      language: node_js
+      node_js: lts/*
+      env: SERVICE=storage-adapter-mongodb
+      install: 
+        - cd src/ts/cmd/${SERVICE}
+        - npm install
+        - source ./integration-test-setup 
+        - sleep 30
+      script: 
+        - npm run test-with-integration
 
 #    - stage: unit-test
 #      language: go 
