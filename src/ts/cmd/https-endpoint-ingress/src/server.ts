@@ -4,12 +4,12 @@ import middleware from "./middleware";
 import errorHandlers from "./middleware/errorHandlers";
 import { AmqpClient } from 'AMQP-Client/lib/AmqpClient';
 
-import { initiateBroker } from "./services/aas-router/RoutingController";
+import { initiateBroker } from './services/aas-router/RoutingController';
 
 //init logger
-import { logger } from "./utils/log";
-import healthRoute from "./services/health/routes";
-import routes from "./services";
+import { logger } from './utils/log';
+import healthRoute from './services/health/routes';
+import routes from './services';
 import { uuid } from 'uuidv4';
 
 
@@ -22,16 +22,16 @@ var CORE_INGRESS_PASSWORD = checkEnvVar('CORE_INGRESS_PASSWORD');
 const PORT = checkEnvVar('CORE_INGRESS_HTTP_PORT');
 // The queue is generated based on the binding key and is unique for the client
 
-let BROKER_QUEUE = CORE_INGRESS_EXCHANGE +"/"+ uuid(); //TODO: here also from env variable??
+let BROKER_QUEUE = CORE_INGRESS_EXCHANGE + '/' + uuid(); //TODO: here also from env variable??
 
 //avoid crashing the process when an unhandled Exception occurs
-process.on("uncaughtException", e => {
-  logger.error("uncaughtException " + e);
+process.on('uncaughtException', (e) => {
+  logger.error('uncaughtException ' + e);
   process.exit(1);
 });
 
-process.on("unhandledRejection", e => {
-  logger.error("Unhandled rejection  " + e);
+process.on('unhandledRejection', (e) => {
+  logger.error('Unhandled rejection  ' + e);
   process.exit(1);
 });
 

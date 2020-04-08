@@ -21,7 +21,7 @@ let CORE_EGRESS_HTTP_BROKER_BINDINGKEY = CORE_EGRESS_EXCHANGE + "." + CORE_EGRES
     CORE_EGRESS_HTTP_QUEUE
   );
 
-  logger.info("HTTP Endpoint - Egress Service Started");
+  logger.info('HTTP Endpoint - Egress Service Started');
 
   let messageInterpreter: BrokerMessageInterpreter = new BrokerMessageInterpreter(
     brokerClient
