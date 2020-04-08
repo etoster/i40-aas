@@ -1,3 +1,4 @@
 #source ./integration-test-setup
 export CORE_DATA_MANAGER_USER=test
 export CORE_DATA_MANAGER_PASSWORD=test
+export CORE_REGISTRIES_ADAPTERS_PROTOCOL=http
