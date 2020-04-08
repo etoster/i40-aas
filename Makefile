@@ -46,8 +46,8 @@ dev:
 .PHONY: build-single
 build-single:
 	BUILD_TAG=$(BUILD_TAG) docker-compose -f docker-compose.dev.yml build i40-aas-$(SERVICE)
-	BUILD_TAG=$(BUILD_TAG) docker tag sapi40/i40-aas-$(SERVICE):latest $(SVC_PREFIX)$(SERVICE):latest
-	BUILD_TAG=$(BUILD_TAG) docker tag sapi40/i40-aas-$(SERVICE):latest $(SVC_PREFIX)$(SERVICE):$(BUILD_TAG)
+	BUILD_TAG=$(BUILD_TAG) docker tag sapi40/i40-aas-$(SERVICE):$(BUILD_TAG) $(SVC_PREFIX)$(SERVICE):latest
+	BUILD_TAG=$(BUILD_TAG) docker tag sapi40/i40-aas-$(SERVICE):$(BUILD_TAG) $(SVC_PREFIX)$(SERVICE):$(BUILD_TAG)
 
 ## Travis CI instruction (separate build & push per service)
 .PHONY: push-single
