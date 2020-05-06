@@ -1097,10 +1097,10 @@
 							"script": {
 								"id": "27627ba8-14c5-4e5f-af86-406285d975d6",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
+									"pm.test(\"Status code is 200 and Body is empty\", function () {",
 									"    pm.response.to.have.status(200);",
-									"});",
-									""
+									"    pm.response.to.have.body(\"[]\");",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -1144,10 +1144,10 @@
 							"script": {
 								"id": "27627ba8-14c5-4e5f-af86-406285d975d6",
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
+									"pm.test(\"Status code is 200 and body has submodelElements\", function () {",
 									"    pm.response.to.have.status(200);",
-									"});",
-									""
+									"    pm.expect(pm.response.text()).to.include(\"submodelElements\");",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -1271,79 +1271,79 @@
 	],
 	"variable": [
 		{
-			"id": "e7d3a07d-19a4-423a-bc89-3adf24164cdb",
+			"id": "edb39368-d8d0-4030-b01e-76a011ab9679",
 			"key": "endpoint_ingress_user",
 			"value": "admin",
 			"type": "string"
 		},
 		{
-			"id": "544f0bd4-97cb-4c9b-bd5b-061ccf2c91d6",
+			"id": "4997fa6f-9a21-4990-baae-67699a6d9fd9",
 			"key": "endpoint_ingress_pwd",
 			"value": "admin",
 			"type": "string"
 		},
 		{
-			"id": "f9a2dbdc-46a8-467b-b4f6-92c7d1290c5d",
+			"id": "c92e4c3d-5141-412a-9bbb-297d4b1d9bf6",
 			"key": "i40-aas-http-endpoint-ingress",
 			"value": "http://localhost:2000",
 			"type": "string"
 		},
 		{
-			"id": "b2cec3d6-4d5d-4803-9e56-971b4e76c289",
+			"id": "7e18288f-4760-4f43-b34a-86dcf9483f4a",
 			"key": "i40-aas-endpoint-registry",
 			"value": "http://localhost:4400",
 			"type": "string"
 		},
 		{
-			"id": "b9af2a91-eaca-432d-8884-e1220ea99798",
+			"id": "72e27aeb-95dc-4833-ad72-6fa72d2d6c2f",
 			"key": "i40-aas-data-manager",
 			"value": "http://localhost:4000",
 			"type": "string"
 		},
 		{
-			"id": "c3c0eef8-aa12-4e7e-9b68-248d58b47222",
+			"id": "adf9474a-3a49-45fb-adde-b2fd9cfcd910",
 			"key": "i40-aas-adapter-registry",
 			"value": "http://localhost:4500",
 			"type": "string"
 		},
 		{
-			"id": "9da5cca1-9138-4e6a-8e7b-e901288cbe08",
+			"id": "144f69cd-5c13-4ffa-b3ae-dd8ae6f73285",
 			"key": "i40-aas-storage-adapter-mongodb",
 			"value": "http://localhost:3100",
 			"type": "string"
 		},
 		{
-			"id": "105f0d5b-1810-45fa-b571-08803453cd85",
+			"id": "a8ddb05a-5511-48f7-81fc-c3fd93a7cccb",
 			"key": "https-endpoint-ingress-host",
 			"value": "i40-aas-http-endpoint-ingress",
 			"type": "string"
 		},
 		{
-			"id": "a4d0cac8-6de3-4bbf-a376-51187a719892",
+			"id": "f448ca07-6237-435b-a5a2-82573150b5f8",
 			"key": "grpc-endpoint-ingress-host",
 			"value": "i40-aas-grpc-endpoint-ingress",
 			"type": "string"
 		},
 		{
-			"id": "98ea3a36-b4f8-4271-9152-5a2012ce0c80",
+			"id": "a5e3f065-c262-4b9a-99da-31d8b68e938d",
 			"key": "https-endpoint-ingress-port",
 			"value": "2000",
 			"type": "string"
 		},
 		{
-			"id": "fab15de4-0f67-4ab2-9450-3e1420c0b51d",
+			"id": "98073d9c-362a-42d2-96fc-d4ad92d2296c",
 			"key": "grpc-endpoint-ingress-port",
 			"value": "8384",
 			"type": "string"
 		},
 		{
-			"id": "c195bda4-e6c3-4ffa-80a9-5f16b3435979",
+			"id": "76d2afaf-8041-4927-8751-e3d94c9846a5",
 			"key": "storage-adapter-mongodb-host",
 			"value": "i40-aas-storage-adapter-mongodb",
 			"type": "string"
 		},
 		{
-			"id": "10aa2855-7520-46e3-a173-bb34c03437f8",
+			"id": "0562e5eb-7e49-44e3-805d-22c409843cd9",
 			"key": "storage-adapter-mongodb-port",
 			"value": "3100",
 			"type": "string"
